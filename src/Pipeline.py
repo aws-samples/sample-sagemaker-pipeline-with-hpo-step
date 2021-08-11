@@ -60,7 +60,7 @@ def get_pipeline(
 
     sm_client = boto3.client("sagemaker")
     boto_session = boto3.Session(region_name=region)
-    sagemaker_session = sagemaker.session.Session(boto_session=boto_session, sagemaker_client=sm_client)
+    sagemaker_session = sagemaker.session.Session(boto_session=boto_session, sagemaker_client=sm_client,default_bucket=default_bucket)
 
     processing_instance_count = ParameterInteger(name="ProcessingInstanceCount", default_value=1)
     processing_instance_type = ParameterString(
