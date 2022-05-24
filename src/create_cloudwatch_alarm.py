@@ -3,8 +3,8 @@ import argparse
 
 
 # Create CloudWatch client
-def create_alarm(pipeline_name, sns_topic_arn):
-    cloudwatch = boto3.client('cloudwatch', region_name='us-east-1')
+def create_alarm(pipeline_name, sns_topic_arn, region_name):
+    cloudwatch = boto3.client('cloudwatch', region_name=region_name)
     namespace = 'AWS/Sagemaker/ModelBuildingPipeline'
     sns_topic_arn = sns_topic_arn
     # Create alarm
@@ -33,10 +33,10 @@ def create_alarm(pipeline_name, sns_topic_arn):
         print("Error Creating an alarm")
 
 
-def create_alarm_register_model(pipeline_name, step_name, sns_topic):
+def create_alarm_register_model(pipeline_name, step_name, sns_topic, region_name):
     namespace = 'AWS/Sagemaker/ModelBuildingPipeline'
     pipeline_name = pipeline_name
-    cloudwatch = boto3.client('cloudwatch', region_name='us-east-1')
+    cloudwatch = boto3.client('cloudwatch', region_name=region_name)
     sns_topic_arn = sns_topic
     # Create alarm
     try:
@@ -76,13 +76,15 @@ if __name__ == "__main__":
     parser.add_argument('--pipeline_name', type=str, default='default')
     parser.add_argument('--sns_topic', type=str, default='default')
     parser.add_argument('--step_name', type=str, default='default')
-
+    parser.add_argument('--region_name', type=str, default='us-east-1')
+    
     args, _ = parser.parse_known_args()
     pipeline_name = args.pipeline_name
     sns_topic = args.sns_topic
     step_name = args.step_name
-    print(pipeline_name, sns_topic, step_name)
+    region_name = args.region_name
+    print(pipeline_name, sns_topic, step_name, region_name)
 
-    create_alarm(pipeline_name, sns_topic)
-    create_alarm_register_model(pipeline_name, step_name, sns_topic)
+    create_alarm(pipeline_name, sns_topic, region_name)
+    create_alarm_register_model(pipeline_name, step_name, sns_topic, region_name)
 
