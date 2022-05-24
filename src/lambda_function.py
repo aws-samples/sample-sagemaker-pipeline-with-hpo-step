@@ -55,7 +55,7 @@ def lambda_handler(event, context):
     print(query_result)
 
     ## Start the pipeline
-    sm_client = boto3.client("sagemaker", 'us-east-1')
+    sm_client = boto3.client("sagemaker", REGION)
     param = {'Name': 'InputDataUrl',
              'Value': location}
     parameters = [param]
